@@ -1,0 +1,47 @@
+<resources>
+    <string name="app_name">NamazTime</string>
+    <string name="title_activity_maps">Map</string>
+     <string name="Content">We are the team of technology lover who love technology and implement the technology according to clients need in order to resolve business problems. We believe that the technology world is changing rapidly and business which walk side by side with technology will succeed in future, we are providing best technology services to our clients by using latest web technologies, mobile application dev-elopment.
+OneWindowSol generate innovative ideas of mobile application which always ping the real-world problem and provide ease of use the technology. </string>
+
+    <string name="title_activity_settings">Settings</string>
+    <string-array name="place_type">
+        <item>1000</item>
+        <item>2000</item>
+        <item>3000</item>
+        <item>4000</item>
+        <item>5000</item>
+    </string-array>
+
+    <string-array name="place_type_name">
+        <item>1km</item>
+        <item>2km</item>
+        <item>3km</item>
+        <item>4km</item>
+        <item>5km</item>
+    </string-array>
+    <string name="title_activity_login">Sign in</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+    <string name="formatted_place_data">
+        Name: %1$s\nAddress: %2$s\nPhone: %3$s\nWebsite: %4$s\nRating: %5$s\nId: %6$s\n
+    </string>
+    <string name="fire">Add</string>
+    <string name="cancel">Cancel</string>
+    <string name="dialog_fire_missiles">Update</string>
+    <string name="ok">ok</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

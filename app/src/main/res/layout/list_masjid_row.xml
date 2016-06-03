@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="5dp">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/cv"
+        app:cardCornerRadius="10dp">
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/list_row_selector"
+            android:padding="8dp">
+
+            <!-- Thumbnail Image -->
+            <ImageView
+                android:id="@+id/thumbnail"
+                android:src="@drawable/icon_mosquelocator"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:padding="10dp"
+                android:layout_alignParentLeft="true"
+                android:layout_marginRight="8dp" />
+
+            <!-- Movie Title -->
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/thumbnail"
+                android:layout_toRightOf="@+id/thumbnail"
+                android:text="test"
+                android:textSize="@dimen/title"
+                android:textStyle="bold" />
+
+            <!-- Rating -->
+            <TextView
+                android:id="@+id/longitude"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/name"
+                android:layout_marginTop="1dip"
+                android:text="98343"
+                android:layout_toRightOf="@+id/thumbnail"
+                android:textSize="@dimen/rating" />
+
+            <!-- Genre -->
+            <TextView
+                android:id="@+id/latitude"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/longitude"
+                android:layout_marginTop="5dp"
+                android:text="98343"
+                android:layout_toRightOf="@+id/thumbnail"
+                android:textColor="@color/genre"
+                android:textSize="@dimen/genre" />
+
+            <!-- Release Year -->
+            <TextView
+                android:id="@+id/vacinity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:text="vacinity"
+                android:textColor="@color/year"
+                android:textSize="@dimen/year" />
+
+            <LinearLayout
+                android:layout_marginTop="30dp"
+                android:layout_margin="5dp"
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageButton
+                    android:id="@+id/imgb_timers"
+                    android:background="@drawable/timers"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp" />
+
+                <ImageButton
+                    android:id="@+id/imgb_direction"
+                    android:background="@drawable/driection"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:text="vacinity"
+                android:textColor="@color/year"
+                android:textSize="@dimen/year"
+                android:id="@+id/txtv_placeid"
+                android:layout_width="0dp"
+                android:layout_height="0dp" />
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>
