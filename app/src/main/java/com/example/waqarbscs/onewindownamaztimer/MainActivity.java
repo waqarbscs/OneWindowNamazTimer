@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.special.ResideMenu.ResideMenu;
@@ -21,6 +22,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public ResideMenuItem Silent;
     public ResideMenuItem AboutUs;
     private MainActivity mContext;
+    TextView TilteTextView;
     public static final String PREFS_NAME = "LoginPrefs";
 
 
@@ -29,8 +31,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mContext = this;
-        if( savedInstanceState == null )
+        TilteTextView=(TextView)findViewById(R.id.TitleText);
+        if( savedInstanceState == null ) {
             changeFragment(new MainFragment());
+            TilteTextView.setText("Mosque Information");
+        }
         getSupportActionBar().hide();
         setup();
     }
@@ -78,8 +83,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         if(v==FindMosque){
             changeFragment(new MainFragment());
+            TilteTextView.setText("Mosque Information");
         }
         if(v==UpdateNamazTime){
+            TilteTextView.setText("Update Namaz Time");
             SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
             if (settings.getString("logged", "").toString().equals("logged")) {
                 changeFragment(new UpdateNamazTime());
@@ -90,9 +97,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         }
         if(v==Silent){
+            TilteTextView.setText("Silent Scheduler");
             changeFragment(new SilentMobile());
         }
         if(v==AboutUs){
+            TilteTextView.setText("OneWindowSol");
             changeFragment(new About());
         }
 
@@ -128,6 +137,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     // What good method is to access resideMenu？
     public ResideMenu getResideMenu(){
         return resideMenu;
+    }
+
+    //Defined in Activity class, so override
+    @Override
+    public void onBackPressed()
+    {
+        //resideMenu.closeMenu();
+           // super.onBackPressed();
+
+
     }
 
 }

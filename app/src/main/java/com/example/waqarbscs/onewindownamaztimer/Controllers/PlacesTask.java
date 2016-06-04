@@ -43,7 +43,7 @@ public class PlacesTask extends AsyncTask<String, Integer, String> {
     // Executed after the complete execution of doInBackground() method
     @Override
     protected void onPostExecute(String result) {
-        Log.d("Data Load: ", result);
+       // Log.d("Data Load: ", result);
         ParserTask parserTask = new ParserTask();
         parserTask.execute(result);
 

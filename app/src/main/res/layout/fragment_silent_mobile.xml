@@ -28,7 +28,7 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Timing"
+                android:text="Namaz"
                 android:id="@+id/textNamaz"
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
@@ -180,7 +180,7 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Magrib Time"
+                    android:text="Maghrib Time"
                     android:id="@+id/textView11"
                     android:layout_weight="1" />
 

@@ -39,6 +39,7 @@
                 android:text="Namaz Timer"
                 android:textSize="24sp"
                 android:textColor="#999999"
+                android:id="@+id/TitleText"
                 android:layout_gravity="center"/>
         <!--
             <Button

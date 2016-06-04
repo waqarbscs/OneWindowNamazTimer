@@ -45,6 +45,7 @@ import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.special.ResideMenu.ResideMenu;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -63,6 +64,8 @@ public class UpdateNamazTime extends Fragment implements DatePickerDialog.OnDate
     LatLng latlng;
     String vicinity = "NA";
     public static final String PREFS_NAME = "LoginPrefs";
+
+    int i=0;
 
     private Calendar calendar;
     private DateFormat dateFormat;
@@ -300,7 +303,7 @@ public class UpdateNamazTime extends Fragment implements DatePickerDialog.OnDate
         boolean b = place.getName().toString().contains("Masjid");
         boolean c = place.getName().toString().contains("mosque");
         boolean d = place.getName().toString().contains("masjid");
-        if (a || b || c || d) {
+        if(a||b||c||d) {
             placeID = place.getId();
             name = place.getName().toString();
             latlng = place.getLatLng();
@@ -309,13 +312,10 @@ public class UpdateNamazTime extends Fragment implements DatePickerDialog.OnDate
             _masjids.setVacinity(vicinity);
             _masjids.setLatLong(latlng);
             button.setVisibility(View.VISIBLE);
-            Log.d("abc", name.toString());
             getMasjidDetail();
             conditon = true;
-        } else {
-            Toast.makeText(getActivity(), "Please select a mosque", Toast.LENGTH_LONG).show();
-        }
-        if (!TextUtils.isEmpty(place.getAttributions())) {
+            //Toast.makeText(getActivity(), "Please select a mosque", Toast.LENGTH_LONG).show();
+        }else if (!TextUtils.isEmpty(place.getAttributions())) {
             attributionsTextView.setText(Html.fromHtml(place.getAttributions().toString()));
         }
     }
@@ -366,6 +366,7 @@ public class UpdateNamazTime extends Fragment implements DatePickerDialog.OnDate
                 builder.setMessage("Want to update Time?");
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialogInterface, int i) {
+
                         Intent intentService = new Intent(getActivity(), RestApiAccessService.class);
                         _masjids.setFajarTime(textFajar.getText().toString());
                         _masjids.setDoharTime(textZuhar.getText().toString());
@@ -377,7 +378,7 @@ public class UpdateNamazTime extends Fragment implements DatePickerDialog.OnDate
                         intentService.putExtra("Action", "update");
                         Log.d("Service", "Starting the service.");
                         getActivity().startService(intentService);
-                        Toast.makeText(getActivity(), "Added successfully", Toast.LENGTH_SHORT).show();
+
                     }
                 }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override

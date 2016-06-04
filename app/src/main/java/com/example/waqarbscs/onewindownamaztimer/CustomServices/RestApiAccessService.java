@@ -4,6 +4,7 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.waqarbscs.onewindownamaztimer.Models.Masjids;
 import com.google.android.gms.maps.model.LatLng;
@@ -74,11 +75,12 @@ public class RestApiAccessService extends IntentService {
 
             String result = getStringResultFromService_POST("http://onewindowsol.com/NimazTime/getMasjidDetail.php", paramPost);
             Log.w("Response", result);
+            Log.v("testId",placeid);
+
 
             //here we get the json string: result
 
             JSONObject jsonObject = new JSONObject(result);
-
             //if we are successfull
             //than we must have object called masjidObject
             Log.d("Json", jsonObject.get("masjidObject").toString());
@@ -142,6 +144,11 @@ public class RestApiAccessService extends IntentService {
 
             String result = getStringResultFromService_POST("http://onewindowsol.com/NimazTime/insertmasjid.php", paramPost);
             Log.w("Response", result);
+            JSONObject jsonObject = new JSONObject(result);
+            String res=jsonObject.getString("response");
+            Log.d("ure",res);
+            if(res=="updated successfully")
+            Toast.makeText(RestApiAccessService.this, "Added successfully", Toast.LENGTH_SHORT).show();
 
         } catch (Exception ex) {
             ex.printStackTrace();

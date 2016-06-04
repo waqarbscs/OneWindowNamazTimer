@@ -83,7 +83,7 @@ public class MasjidDetailPage extends AppCompatActivity {
                     txtVJummaTime.setText(masjidRecieved.getJummaTime());
 
                 } else if (intent.getAction().endsWith(RestApiAccessService.BroadCastActionError)) {
-                    Toast.makeText(MasjidDetailPage.this, "Coundn't find any detail of this masjid.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(MasjidDetailPage.this, "Coundn't find any detail of this Mosque.", Toast.LENGTH_LONG).show();
                 }
             }
         };

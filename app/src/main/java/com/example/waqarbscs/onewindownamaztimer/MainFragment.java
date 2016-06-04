@@ -267,7 +267,7 @@ public class MainFragment extends Fragment
     public boolean IsReadyToFindMasjids() {
 
         LocationSettings();
-/*
+
         LocationManager lm = (LocationManager) getActivity().getSystemService(Activity.LOCATION_SERVICE);
         if(!lm.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
                 !lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
@@ -292,7 +292,7 @@ public class MainFragment extends Fragment
             alertDialog.setCanceledOnTouchOutside(false);
             alertDialog.show();
         }
-*/
+
         if (!AppManager.getInstance().isInternetAvailable()) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             //builder.setTitle("Interent Service Not Enabled");

@@ -13,6 +13,7 @@ import com.example.waqarbscs.onewindownamaztimer.R;
 import com.example.waqarbscs.onewindownamaztimer.SilentMobile;
 
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by waqarbscs on 6/1/2016.
@@ -35,8 +36,7 @@ public class NotificaitionService extends Service {
                         resultIntent,
                         PendingIntent.FLAG_UPDATE_CURRENT
                 );
-
-
+        Calendar cal=Calendar.getInstance();
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
                         .setCategory(Notification.CATEGORY_PROMO)
@@ -45,6 +45,7 @@ public class NotificaitionService extends Service {
                         .setContentText("Namaz Performed in 15 minutes.")
                         .setVisibility(Notification.VISIBILITY_PRIVATE)
                         .setAutoCancel(true)
+                        .setWhen((new Date()).getTime())
                         .setVibrate(new long[]{1000, 1000, 1000, 1000, 1000});
 
         mBuilder.setContentIntent(resultPendingIntent);
