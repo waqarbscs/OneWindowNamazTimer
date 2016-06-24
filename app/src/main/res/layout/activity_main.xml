@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@android:color/white"
     android:orientation="vertical"
-    tools:context="com.example.waqarbscs.onewindownamaztimer.MainActivity">
+    tools:context="com.OneWindowSol.waqarbscs.onewindownamaztimer.MainActivity">
 
     <LinearLayout
         android:orientation="vertical"
@@ -27,7 +27,7 @@
             <Button
                 android:layout_width="28dp"
                 android:layout_height="28dp"
-                android:background="@drawable/titlebar_menu_selector"
+                android:background="@drawable/back_icon"
                 android:id="@+id/title_bar_left_menu"
                 android:layout_gravity="left|center_vertical"
                 android:layout_marginLeft="10dp"/>

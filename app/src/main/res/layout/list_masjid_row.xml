@@ -14,7 +14,6 @@
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/list_row_selector"
             android:padding="8dp">
 
             <!-- Thumbnail Image -->

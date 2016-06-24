@@ -5,10 +5,10 @@ android {
     buildToolsVersion "23.0.3"
 
     defaultConfig {
-        applicationId "com.example.waqarbscs.onewindownamaztimer"
+        applicationId "com.OneWindowSol.waqarbscs.onewindownamaztimer"
         minSdkVersion 15
         targetSdkVersion 23
-        versionCode 1
+        versionCode 3
         versionName "1.0"
         // Enabling multidex support.
         //multiDexEnabled true
@@ -37,6 +37,11 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:23.4.0'
     //compile 'com.google.maps.android:android-maps-utils:0.4.+'
     compile 'com.android.support:support-v4:23.4.0'
-    compile 'com.purplebrain.adbuddiz.sdk:AdBuddiz-Java:3.0'
-    //compile 'com.android.support:multidex:1.0.0'
+    //compile project(':AdBuddiz-3.1.11')
+    compile 'com.purplebrain.adbuddiz.sdk:AdBuddiz-Java:3.+'
+}
+repositories {
+    maven {
+        url 'http://repository.adbuddiz.com/maven'
+    }
 }
