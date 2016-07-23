@@ -22,7 +22,7 @@
                 android:src="@drawable/icon_mosquelocator"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:padding="10dp"
+                android:padding="5dp"
                 android:layout_alignParentLeft="true"
                 android:layout_marginRight="8dp" />
 
@@ -33,6 +33,12 @@
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/thumbnail"
                 android:layout_toRightOf="@+id/thumbnail"
+                android:layout_marginRight="80dp"
+                android:ellipsize="marquee"
+                android:fadingEdge="horizontal"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:scrollHorizontally="true"
+                android:singleLine="true"
                 android:text="test"
                 android:textSize="@dimen/title"
                 android:textStyle="bold" />
@@ -67,30 +73,37 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"
-                android:text="vacinity"
                 android:textColor="@color/year"
                 android:textSize="@dimen/year" />
 
             <LinearLayout
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="20dp"
                 android:layout_margin="5dp"
                 android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
                 <ImageButton
                     android:id="@+id/imgb_timers"
-                    android:background="@drawable/timers"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp" />
+                    android:background="@drawable/timer"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp" />
+            </LinearLayout>
 
+            <LinearLayout
+                android:layout_marginTop="20dp"
+                android:layout_margin="5dp"
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
                 <ImageButton
                     android:id="@+id/imgb_direction"
-                    android:background="@drawable/driection"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp" />
+                    android:background="@drawable/direction"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp" />
+                </LinearLayout>
 
-            </LinearLayout>
 
             <TextView
                 android:text="vacinity"

@@ -8,17 +8,22 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -34,6 +39,7 @@ import com.OneWindowSol.waqarbscs.onewindownamaztimer.Adapters.CustomMasjidListA
 import com.OneWindowSol.waqarbscs.onewindownamaztimer.Adapters.RecyclerViewAdapter;
 import com.OneWindowSol.waqarbscs.onewindownamaztimer.Interfaces.OnPlacesLoadCompletion;
 import com.OneWindowSol.waqarbscs.onewindownamaztimer.Managers.AppManager;
+import com.OneWindowSol.waqarbscs.onewindownamaztimer.Managers.NetworkUtil;
 import com.OneWindowSol.waqarbscs.onewindownamaztimer.Models.Masjids;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -59,7 +65,7 @@ public class MainFragment extends Fragment
         implements LocationListener, View.OnClickListener, OnPlacesLoadCompletion, OnMapReadyCallback {
 
     private int PLACE_PICKER_REQUEST = 1;
-    Location location = null;
+    public Location location = null;
     private static final String TAG = MainFragment.class.getSimpleName();
     GoogleMap mGoogleMap;
     Spinner mSprPlaceType;
@@ -84,13 +90,13 @@ public class MainFragment extends Fragment
 
 
     private BroadcastReceiver mBroadCastReceiver;
+    private IntentFilter mNetworkStateChangedFilter;
 
     static Activity instance;
 
     public static Activity getInstance() {
         return instance;
     }
-
     LocationManager locationManager;
 
     public static final String PREFS_NAME = "LoginPrefs";
@@ -118,9 +124,7 @@ public class MainFragment extends Fragment
         rcAdapter = new RecyclerViewAdapter(_masjids);
         rcView.setAdapter(rcAdapter);
 
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            checkLocationPermission();
-        }
+
 
         GoogleApiAvailability googleAPI = GoogleApiAvailability.getInstance();
         int status = googleAPI.isGooglePlayServicesAvailable(getActivity());
@@ -166,8 +170,34 @@ public class MainFragment extends Fragment
                 }
 
             }
-
+        mNetworkStateChangedFilter=new IntentFilter();
+        mNetworkStateChangedFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+        mBroadCastReceiver=new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String status= NetworkUtil.getConnectivityStatusString(context);
+                if(status=="Wifi enabled"||status=="Mobile data enabled"){
+                    if(IsReadyToFindMasjids()){
+                        FindTheMasjidsNearby();
+                    }
+                }
+            }
+        };
         return ParentView;
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+         getActivity().registerReceiver(mBroadCastReceiver,mNetworkStateChangedFilter);
+
+        getActivity().unregisterReceiver(mBroadCastReceiver);
+        getActivity().registerReceiver(mBroadCastReceiver, mNetworkStateChangedFilter);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        getActivity().unregisterReceiver(mBroadCastReceiver);
     }
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
 
@@ -244,6 +274,12 @@ public class MainFragment extends Fragment
 
         try {
             location = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+
+           // SharedPreferences locPreference=getActivity().getSharedPreferences("loc",0);
+           // SharedPreferences.Editor editloctaion=locPreference.edit();
+            //editloctaion.putString("localat",Double.toString(location.getLatitude()));
+           // editloctaion.putString("loclong",Double.toString(location.getLongitude()));
+           // editloctaion.apply();
 
             if (location != null)
                 AppManager.getInstance().setCurrentLatLong(new LatLng(location.getLatitude(), location.getLongitude()));
@@ -344,8 +380,13 @@ public class MainFragment extends Fragment
     public boolean IsReadyToFindMasjids() {
 
         LocationSettings();
-
         LocationManager lm = (LocationManager) getActivity().getSystemService(Activity.LOCATION_SERVICE);
+        if(!lm.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
+                !lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+            Toast.makeText(getContext(), "Please Enable GPS for Current location Nearby Mosques.", Toast.LENGTH_SHORT).show();
+        }
+        if(location==null){
+
         if(!lm.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
                 !lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
             // Build the alert dialog
@@ -376,7 +417,11 @@ public class MainFragment extends Fragment
             alertDialog.show();
         }
 
+    }
+
+
         if (!AppManager.getInstance().isInternetAvailable()) {
+
             AlertDialog.Builder builder;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 builder = new AlertDialog.Builder(getActivity(), android.R.style.Theme_Material_Dialog_Alert);
@@ -391,6 +436,8 @@ public class MainFragment extends Fragment
                     // Show location settings when the user acknowledges the alert dialog
                     Intent intent = new Intent(Settings.ACTION_WIFI_SETTINGS);
                     startActivity(intent);
+
+
                 }
             }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                 @Override
@@ -402,7 +449,11 @@ public class MainFragment extends Fragment
             Dialog alertDialog = builder.create();
             alertDialog.setCanceledOnTouchOutside(false);
             alertDialog.show();
-            Toast.makeText(getActivity(), "Please connect to internet.", Toast.LENGTH_SHORT).show();
+
+                Toast.makeText(getActivity(), "Please connect to internet.", Toast.LENGTH_SHORT).show();
+
+
+
             return false;
         }
 

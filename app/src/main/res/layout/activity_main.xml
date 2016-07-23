@@ -12,7 +12,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/layout_top"
-        android:background="@color/colorPrimary">
+        android:background="#333740">
         <!--
         <ImageView
             android:layout_width="match_parent"
@@ -38,18 +38,19 @@
                 android:padding="7dp"
                 android:text="Namaz Timer"
                 android:textSize="24sp"
-                android:textColor="#999999"
+                android:textColor="#ffffff"
                 android:id="@+id/TitleText"
                 android:layout_gravity="center"/>
-        <!--
+
             <Button
                 android:layout_width="28dp"
                 android:layout_height="28dp"
                 android:background="@drawable/titlebar_menu_selector"
-                android:id="@+id/title_bar_right_menu"
+                android:id="@+id/ico"
                 android:layout_gravity="right|center_vertical"
-                android:layout_marginRight="10dp"/>
-                -->
+                android:layout_marginRight="10dp"
+                android:visibility="invisible"/>
+
         </FrameLayout>
         <!--
         <ImageView

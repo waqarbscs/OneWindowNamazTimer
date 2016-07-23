@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import com.android.datetimepicker.date.DatePickerDialog;
 import com.android.datetimepicker.time.RadialPickerLayout;
@@ -36,7 +37,7 @@ import java.util.Random;
  * A simple {@link Fragment} subclass.
  *
  */
-public class SilentMobile extends Fragment implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener, View.OnClickListener {
+public class SilentMobile extends Fragment implements  View.OnClickListener {
 
     View ParentView;
     Calendar calendar;
@@ -55,6 +56,8 @@ public class SilentMobile extends Fragment implements DatePickerDialog.OnDateSet
     public static String MY_PREFS = "MY_PREFS";
     private SharedPreferences mySharedPreferences;
     SharedPreferences.Editor editor;
+
+    private int  mHour, mMinute;
 
     public SilentMobile() {
         // Required empty public constructor
@@ -87,17 +90,16 @@ public class SilentMobile extends Fragment implements DatePickerDialog.OnDateSet
         EshaEnd = (TextView) ParentView.findViewById(R.id.EshaEnd);
 
         mySharedPreferences = getContext().getSharedPreferences(MY_PREFS, 0);
-        String string1 = mySharedPreferences.getString("key1", null);
-        String string2 = mySharedPreferences.getString("key2", null);
-        String string3 = mySharedPreferences.getString("key3", null);
-        String string4 = mySharedPreferences.getString("key4", null);
-        String string5 = mySharedPreferences.getString("key5", null);
-        String string6 = mySharedPreferences.getString("key6", null);
-        String string7 = mySharedPreferences.getString("key7", null);
-        String string8 = mySharedPreferences.getString("key8", null);
-        String string9 = mySharedPreferences.getString("key9", null);
-        String string0 = mySharedPreferences.getString("key0", null);
-
+        String string1 = mySharedPreferences.getString("key1", "00:00");
+        String string2 = mySharedPreferences.getString("key2", "00:00");
+        String string3 = mySharedPreferences.getString("key3", "00:00");
+        String string4 = mySharedPreferences.getString("key4", "00:00");
+        String string5 = mySharedPreferences.getString("key5", "00:00");
+        String string6 = mySharedPreferences.getString("key6", "00:00");
+        String string7 = mySharedPreferences.getString("key7", "00:00");
+        String string8 = mySharedPreferences.getString("key8", "00:00");
+        String string9 = mySharedPreferences.getString("key9", "00:00");
+        String string0 = mySharedPreferences.getString("key0", "00:00");
 
         if (string1 != null) {
             fajarStart.setText(string1);
@@ -176,7 +178,7 @@ public class SilentMobile extends Fragment implements DatePickerDialog.OnDateSet
 
                 //AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 //builder.setTitle("Location Services Not Active");
-                builder.setMessage("Want To start Service");
+                builder.setMessage("Want To Start Namaz Service");
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Calendar cal = Calendar.getInstance();
@@ -213,106 +215,134 @@ public class SilentMobile extends Fragment implements DatePickerDialog.OnDateSet
         alarmManager.cancel(pintent);
     }
 
-    @Override
-    public void onDateSet(DatePickerDialog dialog, int year, int monthOfYear, int dayOfMonth) {
-        calendar.set(year, monthOfYear, dayOfMonth);
-        update(click);
-    }
 
-    @Override
-    public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute) {
-        calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
-        calendar.set(Calendar.MINUTE, minute);
-        update(click);
-    }
-
-    private void update(String s) {
-        switch (s) {
-            case "FajarStart":
-                fajarStart.setText(timeFormat.format(calendar.getTime()));
-                break;
-            case "FajarEnd":
-                FajarEnd.setText(timeFormat.format(calendar.getTime()));
-                break;
-            case "ZuharStart":
-                zuharStart.setText(timeFormat.format(calendar.getTime()));
-                break;
-            case "ZuharEnd":
-                zuharEnd.setText(timeFormat.format(calendar.getTime()));
-                break;
-            case "AsarStart":
-                asarStart.setText(timeFormat.format(calendar.getTime()));
-                break;
-            case "AsarEnd":
-                asarEnd.setText(timeFormat.format(calendar.getTime()));
-                break;
-            case "MagribStart":
-                magribStart.setText(timeFormat.format(calendar.getTime()));
-                break;
-            case "MagribEnd":
-                magribEnd.setText(timeFormat.format(calendar.getTime()));
-                break;
-            case "EshaStart":
-                EshaStart.setText(timeFormat.format(calendar.getTime()));
-                break;
-            case "EshaEnd":
-                EshaEnd.setText(timeFormat.format(calendar.getTime()));
-                break;
-        }
-    }
 
     @Override
     public void onClick(View v) {
+        final Calendar c = Calendar.getInstance();
+        mHour = c.get(Calendar.HOUR_OF_DAY);
+        mMinute = c.get(Calendar.MINUTE);
         switch (v.getId()) {
             case R.id.FajarStart:
                 click = "FajarStart";
-                TimePickerDialog.newInstance(SilentMobile.this, calendar.get(Calendar.HOUR_OF_DAY),
-                        calendar.get(Calendar.MINUTE), true).show(getActivity().getFragmentManager(), "timePicker");
+
+                android.app.TimePickerDialog timePickerDialog = new android.app.TimePickerDialog(getActivity(),
+                        new android.app.TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay,
+                                                  int minute) {
+                                fajarStart.setText(hourOfDay + ":" + minute);
+                            }
+                        }, mHour, mMinute, false);
+                timePickerDialog.show();
                 break;
             case R.id.FajarEnd:
                 click = "FajarEnd";
-                TimePickerDialog.newInstance(SilentMobile.this, calendar.get(Calendar.HOUR_OF_DAY),
-                        calendar.get(Calendar.MINUTE), true).show(getActivity().getFragmentManager(), "timePicker");
+                android.app.TimePickerDialog timePickerDialog1 = new android.app.TimePickerDialog(getActivity(),
+                        new android.app.TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay,
+                                                  int minute) {
+                                FajarEnd.setText(hourOfDay + ":" + minute);
+                            }
+                        }, mHour, mMinute, false);
+                timePickerDialog1.show();
                 break;
             case R.id.ZuharStart:
                 click = "ZuharStart";
-                TimePickerDialog.newInstance(SilentMobile.this, calendar.get(Calendar.HOUR_OF_DAY),
-                        calendar.get(Calendar.MINUTE), true).show(getActivity().getFragmentManager(), "timePicker");
+                android.app.TimePickerDialog timePickerDialog2 = new android.app.TimePickerDialog(getActivity(),
+                        new android.app.TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay,
+                                                  int minute) {
+                                zuharStart.setText(hourOfDay + ":" + minute);
+                            }
+                        }, mHour, mMinute, false);
+                timePickerDialog2.show();
                 break;
             case R.id.ZuharEnd:
                 click = "ZuharEnd";
-                TimePickerDialog.newInstance(SilentMobile.this, calendar.get(Calendar.HOUR_OF_DAY),
-                        calendar.get(Calendar.MINUTE), true).show(getActivity().getFragmentManager(), "timePicker");
+                android.app.TimePickerDialog timePickerDialog3 = new android.app.TimePickerDialog(getActivity(),
+                        new android.app.TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay,
+                                                  int minute) {
+                                zuharEnd.setText(hourOfDay + ":" + minute);
+                            }
+                        }, mHour, mMinute, false);
+                timePickerDialog3.show();
                 break;
             case R.id.AsarStart:
                 click = "AsarStart";
-                TimePickerDialog.newInstance(SilentMobile.this, calendar.get(Calendar.HOUR_OF_DAY),
-                        calendar.get(Calendar.MINUTE), true).show(getActivity().getFragmentManager(), "timePicker");
+                android.app.TimePickerDialog timePickerDialog4 = new android.app.TimePickerDialog(getActivity(),
+                        new android.app.TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay,
+                                                  int minute) {
+                                asarStart.setText(hourOfDay + ":" + minute);
+                            }
+                        }, mHour, mMinute, false);
+                timePickerDialog4.show();
                 break;
             case R.id.AsarEnd:
                 click = "AsarEnd";
-                TimePickerDialog.newInstance(SilentMobile.this, calendar.get(Calendar.HOUR_OF_DAY),
-                        calendar.get(Calendar.MINUTE), true).show(getActivity().getFragmentManager(), "timePicker");
+                android.app.TimePickerDialog timePickerDialog5 = new android.app.TimePickerDialog(getActivity(),
+                        new android.app.TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay,
+                                                  int minute) {
+                                asarEnd.setText(hourOfDay + ":" + minute);
+                            }
+                        }, mHour, mMinute, false);
+                timePickerDialog5.show();
                 break;
             case R.id.MagribStart:
                 click = "MagribStart";
-                TimePickerDialog.newInstance(SilentMobile.this, calendar.get(Calendar.HOUR_OF_DAY),
-                       calendar.get(Calendar.MINUTE), true).show(getActivity().getFragmentManager(), "timePicker");
+                android.app.TimePickerDialog timePickerDialog6 = new android.app.TimePickerDialog(getActivity(),
+                        new android.app.TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay,
+                                                  int minute) {
+                                magribStart.setText(hourOfDay + ":" + minute);
+                            }
+                        }, mHour, mMinute, false);
+                timePickerDialog6.show();
                 break;
             case R.id.MagribEnd:
                 click = "MagribEnd";
-                TimePickerDialog.newInstance(SilentMobile.this, calendar.get(Calendar.HOUR_OF_DAY),
-                        calendar.get(Calendar.MINUTE), true).show(getActivity().getFragmentManager(), "timePicker");
+                android.app.TimePickerDialog timePickerDialog7 = new android.app.TimePickerDialog(getActivity(),
+                        new android.app.TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay,
+                                                  int minute) {
+                                magribEnd.setText(hourOfDay + ":" + minute);
+                            }
+                        }, mHour, mMinute, false);
+                timePickerDialog7.show();
                 break;
             case R.id.EshaStart:
                 click = "EshaStart";
-                TimePickerDialog.newInstance(SilentMobile.this, calendar.get(Calendar.HOUR_OF_DAY),
-                        calendar.get(Calendar.MINUTE), true).show(getActivity().getFragmentManager(), "timePicker");
+                android.app.TimePickerDialog timePickerDialog8 = new android.app.TimePickerDialog(getActivity(),
+                        new android.app.TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay,
+                                                  int minute) {
+                                EshaEnd.setText(hourOfDay + ":" + minute);
+                            }
+                        }, mHour, mMinute, false);
+                timePickerDialog8.show();
                 break;
             case R.id.EshaEnd:
                 click = "EshaEnd";
-                TimePickerDialog.newInstance(SilentMobile.this, calendar.get(Calendar.HOUR_OF_DAY),
-                        calendar.get(Calendar.MINUTE), true).show(getActivity().getFragmentManager(), "timePicker");
+                android.app.TimePickerDialog timePickerDialog9 = new android.app.TimePickerDialog(getActivity(),
+                        new android.app.TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay,
+                                                  int minute) {
+                                EshaStart.setText(hourOfDay + ":" + minute);
+                            }
+                        }, mHour, mMinute, false);
+                timePickerDialog9.show();
                 break;
 
         }

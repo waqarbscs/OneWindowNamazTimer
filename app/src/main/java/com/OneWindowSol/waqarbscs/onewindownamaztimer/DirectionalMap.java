@@ -5,8 +5,10 @@ import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.OneWindowSol.waqarbscs.onewindownamaztimer.DirectionClasses.DirectionFinder;
@@ -40,20 +42,37 @@ public class DirectionalMap extends AppCompatActivity implements DirectionFinder
     String placeid;
     String masjidname;
 
+    Button normal,hybrid;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
 
         super.onCreate(savedInstanceState);
-
+        setTitle("Mosque Direction");
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_directional_map);
+
+        normal=(Button)findViewById(R.id.button2);
+        hybrid=(Button)findViewById(R.id.button3);
 
         SupportMapFragment fragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
 
         // Getting Google Map
         mGoogleMap = fragment.getMap();
+        normal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+            }
+        });
+        hybrid.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mGoogleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+            }
+        });
 
         placeid = getIntent().getStringExtra("PlaceId");
         Log.w("PlaceId", "" + placeid);
@@ -75,7 +94,6 @@ public class DirectionalMap extends AppCompatActivity implements DirectionFinder
                 Log.d("Exception", "Ex: " + iArgument.getMessage());
             }
         }
-
 
     }
 
@@ -100,7 +118,6 @@ public class DirectionalMap extends AppCompatActivity implements DirectionFinder
         destinationMarkers = new ArrayList<>();
         PolylineOptions polylineOptions;
         for (Route route1 : route) {
-
             mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(route1.startLocation, 18));
             //((TextView) findViewById(R.id.tvDuration)).setText(route.duration.text);
             //((TextView) findViewById(R.id.tvDistance)).setText(route.distance.text);
@@ -115,7 +132,6 @@ public class DirectionalMap extends AppCompatActivity implements DirectionFinder
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.a)
                     )
             ));
-
             polylineOptions = new PolylineOptions().
                     geodesic(true).
                     color(Color.BLUE).
@@ -126,6 +142,4 @@ public class DirectionalMap extends AppCompatActivity implements DirectionFinder
             polylinePaths.add(mGoogleMap.addPolyline(polylineOptions));
         }
     }
-
-
 }

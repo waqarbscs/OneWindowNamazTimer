@@ -59,7 +59,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             VicinityText += "...";
         }
 
-        holder.vicinity.setText(VicinityText);
+        //holder.vicinity.setText(VicinityText);
         holder.placeid.setText(_masjids.get(position).getPlaceId());
 
         holder.latitude.setText(String.valueOf(_masjids.get(position).getLatLong().latitude));
@@ -145,6 +145,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
             cv = (CardView) itemView.findViewById(R.id.cv);
             masjidName = (TextView) itemView.findViewById(R.id.name);
+            masjidName.setSelected(true);
             vicinity = (TextView) itemView.findViewById(R.id.vacinity);
             longitude = (TextView) itemView.findViewById(R.id.longitude);
             latitude = (TextView) itemView.findViewById(R.id.latitude);

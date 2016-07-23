@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.OneWindowSol.waqarbscs.onewindownamaztimer.DirectionalMap">
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
@@ -11,5 +10,28 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         class="com.google.android.gms.maps.SupportMapFragment" />
+
+    <Button
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"
+        android:text="Normal"
+        android:id="@+id/button2"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="10dp"
+        android:padding="10dp"/>
+
+    <Button
+        android:layout_height="wrap_content"
+        android:text="Hybrid"
+        android:id="@+id/button3"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_width="30dp"
+        android:layout_marginRight="10dp"
+        android:padding="10dp"/>
+
 
 </RelativeLayout>

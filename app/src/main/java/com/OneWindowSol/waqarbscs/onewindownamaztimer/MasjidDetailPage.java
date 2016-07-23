@@ -18,7 +18,9 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.OneWindowSol.waqarbscs.onewindownamaztimer.CustomServices.RestApiAccessService;
@@ -33,7 +35,7 @@ import java.util.Calendar;
 import java.util.Locale;
 
 
-public class MasjidDetailPage extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener, View.OnClickListener {
+public class MasjidDetailPage extends AppCompatActivity implements  View.OnClickListener {
 
     private static final String EXTRA_IMAGE = "com.antonioleiva.materializeyourapp.extraImage";
     private static final String EXTRA_TITLE = "com.antonioleiva.materializeyourapp.extraTitle";
@@ -54,6 +56,9 @@ public class MasjidDetailPage extends AppCompatActivity implements DatePickerDia
     TextView txtVeshaTime;
     TextView txtVJummaTime;
 
+    ImageView image1,image2,image3,image4,image5,image6;
+
+
     String click;
     private Calendar calendar;
     private static final String TIME_PATTERN = "HH:mm";
@@ -62,6 +67,8 @@ public class MasjidDetailPage extends AppCompatActivity implements DatePickerDia
     ImageButton imageButton;
 
     Masjids _masjids;
+
+    private int  mHour, mMinute;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +93,14 @@ public class MasjidDetailPage extends AppCompatActivity implements DatePickerDia
         txtVeshaTime = (TextView) findViewById(R.id.txtv_eshaTime);
         txtVJummaTime = (TextView) findViewById(R.id.txtv_jummaTime);
 
+
+        image1=(ImageView)findViewById(R.id.image1);
+        image2=(ImageView)findViewById(R.id.image2);
+        image3=(ImageView)findViewById(R.id.image3);
+        image4=(ImageView)findViewById(R.id.image4);
+        image5=(ImageView)findViewById(R.id.image5);
+        image6=(ImageView)findViewById(R.id.image6);
+
         imageButton=(ImageButton)findViewById(R.id.imagebutton);
 
         imageButton.setOnClickListener(this);
@@ -96,53 +111,105 @@ public class MasjidDetailPage extends AppCompatActivity implements DatePickerDia
 
         txtVMasjidName = (TextView) findViewById(R.id.txtv_masjidName);
         txtVMasjidName.setText(masjidname);
+        final Calendar c = Calendar.getInstance();
+        mHour = c.get(Calendar.HOUR_OF_DAY);
+        mMinute = c.get(Calendar.MINUTE);
 
-        txtVfarjarTime.setOnClickListener(new View.OnClickListener() {
+        image1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 click = "Fajar";
-                TimePickerDialog.newInstance(MasjidDetailPage.this, calendar.get(Calendar.HOUR_OF_DAY),
-                        calendar.get(Calendar.MINUTE), true).show(getFragmentManager(), "timePicker");
+                android.app.TimePickerDialog timePickerDialog = new android.app.TimePickerDialog(MasjidDetailPage.this,
+                        new android.app.TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay,
+                                                  int minute) {
+                                txtVfarjarTime.setText(hourOfDay + ":" + minute);
+                            }
+                        }, mHour, mMinute, false);
+                timePickerDialog.show();
+                imageButton.setVisibility(View.VISIBLE);
+
             }
         });
-        txtVdoharTime.setOnClickListener(new View.OnClickListener() {
+        image2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 click = "Duhar";
-                TimePickerDialog.newInstance(MasjidDetailPage.this, calendar.get(Calendar.HOUR_OF_DAY),
-                        calendar.get(Calendar.MINUTE), true).show(getFragmentManager(), "timePicker");
+                android.app.TimePickerDialog timePickerDialog1 = new android.app.TimePickerDialog(MasjidDetailPage.this,
+                        new android.app.TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay,
+                                                  int minute) {
+                                txtVdoharTime.setText(hourOfDay + ":" + minute);
+                            }
+                        }, mHour, mMinute, false);
+                timePickerDialog1.show();
+                imageButton.setVisibility(View.VISIBLE);
             }
         });
-        txtVasarTime.setOnClickListener(new View.OnClickListener() {
+        image3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 click = "Asar";
-                TimePickerDialog.newInstance(MasjidDetailPage.this, calendar.get(Calendar.HOUR_OF_DAY),
-                        calendar.get(Calendar.MINUTE), true).show(getFragmentManager(), "timePicker");
+                android.app.TimePickerDialog timePickerDialog = new android.app.TimePickerDialog(MasjidDetailPage.this,
+                        new android.app.TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay,
+                                                  int minute) {
+                                txtVasarTime.setText(hourOfDay + ":" + minute);
+                            }
+                        }, mHour, mMinute, false);
+                timePickerDialog.show();
+                imageButton.setVisibility(View.VISIBLE);
             }
         });
-        txtVmagribTime.setOnClickListener(new View.OnClickListener() {
+        image4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 click = "Magrib";
-                TimePickerDialog.newInstance(MasjidDetailPage.this, calendar.get(Calendar.HOUR_OF_DAY),
-                        calendar.get(Calendar.MINUTE), true).show(getFragmentManager(), "timePicker");
+                android.app.TimePickerDialog timePickerDialog = new android.app.TimePickerDialog(MasjidDetailPage.this,
+                        new android.app.TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay,
+                                                  int minute) {
+                                txtVmagribTime.setText(hourOfDay + ":" + minute);
+                            }
+                        }, mHour, mMinute, false);
+                timePickerDialog.show();
+                imageButton.setVisibility(View.VISIBLE);
             }
         });
-        txtVeshaTime.setOnClickListener(new View.OnClickListener() {
+        image5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 click = "Esha";
-                TimePickerDialog.newInstance(MasjidDetailPage.this, calendar.get(Calendar.HOUR_OF_DAY),
-                        calendar.get(Calendar.MINUTE), true).show(getFragmentManager(), "timePicker");
+                android.app.TimePickerDialog timePickerDialog = new android.app.TimePickerDialog(MasjidDetailPage.this,
+                        new android.app.TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay,
+                                                  int minute) {
+                                txtVeshaTime.setText(hourOfDay + ":" + minute);
+                            }
+                        }, mHour, mMinute, false);
+                timePickerDialog.show();
+                imageButton.setVisibility(View.VISIBLE);
             }
         });
-        txtVJummaTime.setOnClickListener(new View.OnClickListener() {
+        image6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 click = "Juma";
-                TimePickerDialog.newInstance(MasjidDetailPage.this, calendar.get(Calendar.HOUR_OF_DAY),
-                        calendar.get(Calendar.MINUTE), true).show(getFragmentManager(), "timePicker");
+                android.app.TimePickerDialog timePickerDialog = new android.app.TimePickerDialog(MasjidDetailPage.this,
+                        new android.app.TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay,
+                                                  int minute) {
+                                txtVJummaTime.setText(hourOfDay + ":" + minute);
+                            }
+                        }, mHour, mMinute, false);
+                timePickerDialog.show();
+                imageButton.setVisibility(View.VISIBLE);
             }
         });
 
@@ -216,40 +283,7 @@ public class MasjidDetailPage extends AppCompatActivity implements DatePickerDia
         }
     }
 
-    @Override
-    public void onDateSet(DatePickerDialog dialog, int year, int monthOfYear, int dayOfMonth) {
 
-    }
-
-    @Override
-    public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute) {
-        calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
-        calendar.set(Calendar.MINUTE, minute);
-        update(click);
-    }
-    private void update(String s) {
-        switch (s) {
-            case "Fajar":
-                txtVfarjarTime.setText(timeFormat.format(calendar.getTime()));
-                break;
-            case "Duhar":
-                txtVdoharTime.setText(timeFormat.format(calendar.getTime()));
-                break;
-            case "Asar":
-                txtVasarTime.setText(timeFormat.format(calendar.getTime()));
-                break;
-            case "Magrib":
-                txtVmagribTime.setText(timeFormat.format(calendar.getTime()));
-                break;
-            case "Esha":
-                txtVeshaTime.setText(timeFormat.format(calendar.getTime()));
-                break;
-            case "Juma":
-                txtVJummaTime.setText(timeFormat.format(calendar.getTime()));
-                break;
-        }
-        imageButton.setVisibility(View.VISIBLE);
-    }
 
     @Override
     public void onClick(View v) {
