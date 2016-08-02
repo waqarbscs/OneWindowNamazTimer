@@ -40,7 +40,8 @@
                 android:textSize="24sp"
                 android:textColor="#ffffff"
                 android:id="@+id/TitleText"
-                android:layout_gravity="center"/>
+                android:layout_gravity="center"
+                />
 
             <Button
                 android:layout_width="28dp"

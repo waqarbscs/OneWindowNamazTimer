@@ -22,10 +22,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -209,24 +211,28 @@ public class UpdateNamazTime extends Fragment implements CompoundButton.OnChecke
         final View dialogView = inflater.inflate(R.layout.custom_dialog, null);
         dialogBuilder.setView(dialogView);
 
-        final EditText edt = (EditText) dialogView.findViewById(R.id.edit1);
-        final  EditText edt1=(EditText)dialogView.findViewById(R.id.edit2);
+        final Spinner edt = (Spinner) dialogView.findViewById(R.id.edit1);
+        final  Spinner edt1=(Spinner) dialogView.findViewById(R.id.edit2);
+        //edt1.getSelectedView().setEnabled(false);
+        edt1.setEnabled(false);
+        Countries country=new Countries();
+        ArrayList<String> sbc=country.getCountry();
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, sbc);
+        edt.setAdapter(adapter);
         dialogBuilder.setTitle("Select City And Country Name");
         //dialogBuilder.setMessage("Enter text below");
         dialogBuilder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 //do something with edt.getText().toString();
-                String a=edt.getText().toString();
-                String b=edt1.getText().toString();
+                //String a=edt.getText().toString();
+                // b=edt1.getText().toString();
 
                 if (AppManager.getInstance().isInternetAvailable()) {
-                    if(a!=null&&b!=null) {
-                        new NamazTimes().execute("http://api.aladhan.com/timingsByCity?city=" + a + "&country=" + b + "&method=1");
-                    }
-                    else {
-                        Toast.makeText(getActivity(), "Please set city and country name", Toast.LENGTH_SHORT).show();
-                    }
-                    }
+
+
+                    new NamazTimes().execute("http://api.aladhan.com/timingsByCity?city=" + "dfdsfs" + "&country=" + "fsdfd" + "&method=1");
+
+                }
                 else{
                     Toast.makeText(getActivity(), "Internet is not avaialbe", Toast.LENGTH_SHORT).show();
                 }
@@ -367,12 +373,9 @@ public class UpdateNamazTime extends Fragment implements CompoundButton.OnChecke
             try {
                 URL url = new URL(link);
                 url.openConnection().setConnectTimeout(10000); //setting
-                InputStream is = url.openConnection().getInputStream();
-
-
-                StringBuffer buffer = new StringBuffer();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-
+                    InputStream is = url.openConnection().getInputStream();
+                    StringBuffer buffer = new StringBuffer();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(is));
                 String line;
                 while ((line = reader.readLine()) != null) {
                     buffer.append(line + "\n");

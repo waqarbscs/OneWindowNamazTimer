@@ -11,12 +11,15 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.location.Address;
 import android.location.Criteria;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.wifi.WifiManager;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -37,6 +40,7 @@ import android.widget.Toast;
 
 import com.OneWindowSol.waqarbscs.onewindownamaztimer.Adapters.CustomMasjidListAdapter;
 import com.OneWindowSol.waqarbscs.onewindownamaztimer.Adapters.RecyclerViewAdapter;
+import com.OneWindowSol.waqarbscs.onewindownamaztimer.Controllers.ParserTask;
 import com.OneWindowSol.waqarbscs.onewindownamaztimer.Interfaces.OnPlacesLoadCompletion;
 import com.OneWindowSol.waqarbscs.onewindownamaztimer.Managers.AppManager;
 import com.OneWindowSol.waqarbscs.onewindownamaztimer.Managers.NetworkUtil;
@@ -53,9 +57,19 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 
 /**
@@ -281,8 +295,11 @@ public class MainFragment extends Fragment
            // editloctaion.putString("loclong",Double.toString(location.getLongitude()));
            // editloctaion.apply();
 
-            if (location != null)
+            if (location != null) {
                 AppManager.getInstance().setCurrentLatLong(new LatLng(location.getLatitude(), location.getLongitude()));
+                //new geoLocation().execute();
+                //getGeoCoder();
+            }
 
         } catch (SecurityException ex) {
             Toast.makeText(getActivity(), "Could not get permission to get user last known location.", Toast.LENGTH_SHORT).show();
@@ -315,6 +332,37 @@ public class MainFragment extends Fragment
         if (location == null) {
             location = mGoogleMap.getMyLocation();
             onLocationChanged(location);
+        }
+    }
+
+    private void getGeoCoder() {
+        Geocoder geocoder= new Geocoder(getContext(), Locale.ENGLISH);
+
+        try {
+
+            //Place your latitude and longitude
+            List<Address> addresses = geocoder.getFromLocation(location.getLatitude(),location.getLongitude(), 5);
+
+            if(addresses != null) {
+
+                Address fetchedAddress = addresses.get(0);
+                StringBuilder strAddress = new StringBuilder();
+
+                for(int i=0; i<fetchedAddress.getMaxAddressLineIndex(); i++) {
+                    strAddress.append(fetchedAddress.getAddressLine(i)).append("\n");
+                }
+
+                //myAddress.setText("I am at: " +strAddress.toString());
+
+            }
+            
+               // myAddress.setText("No location found..!");
+
+        }
+        catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            Toast.makeText(getActivity(),"Could not get address..!", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -570,7 +618,72 @@ public class MainFragment extends Fragment
         rcAdapter.notifyDataSetChanged();
 
     }
+    class geoLocation extends AsyncTask<String,Void,String>{
+        String data = null;
+        @Override
+        protected String doInBackground(String... params) {
 
+            try {
+                data=downloadData("https://maps.googleapis.com/maps/api/geocode/json?latlng="+location.getLatitude()+","+location.getLongitude()+"&key=AIzaSyDZLqRFRSUIncfiS8KXaHHw52YgdZyI6OQ");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return data;
+        }
+        @Override
+        protected void onPostExecute(String result) {
+
+            try {
+                JSONObject js=new JSONObject(result);
+                JSONObject jsonArray=js.getJSONObject("results");
+
+
+
+
+            } catch (Exception e) {
+                Log.d("Exception", e.toString());
+            }
+
+        }
+        private String downloadData(String strUrl) throws IOException {
+            String data = "";
+            InputStream iStream = null;
+            HttpURLConnection urlConnection = null;
+            try {
+                URL url = new URL(strUrl);
+                Log.d("data", "Downloading from: " + url);
+                // Creating an http connection to communicate with url
+                urlConnection = (HttpURLConnection) url.openConnection();
+
+                // Connecting to url
+                urlConnection.connect();
+
+                // Reading data from url
+                iStream = urlConnection.getInputStream();
+
+                BufferedReader br = new BufferedReader(new InputStreamReader(iStream));
+
+                StringBuffer sb = new StringBuffer();
+
+                String line = "";
+                while ((line = br.readLine()) != null) {
+                    sb.append(line);
+                }
+
+                data = sb.toString();
+                Log.d("data", "Downloaded: " + data);
+                br.close();
+
+            } catch (Exception e) {
+                Log.d("Downloading Exception", e.toString());
+            } finally {
+                iStream.close();
+                urlConnection.disconnect();
+            }
+
+            return data;
+        }
+    }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {

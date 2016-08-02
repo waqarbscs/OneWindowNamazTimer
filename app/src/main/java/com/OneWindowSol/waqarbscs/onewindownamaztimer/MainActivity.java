@@ -172,7 +172,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             resideMenu.closeMenu();
         }else
         if(v==Silent){
-            TilteTextView.setText("Prayer Time Silent");
+            TilteTextView.setText("Namaz Time Silent");
             changeFragment(new SilentMobile());
             resideMenu.closeMenu();
             //stop adds

@@ -53,9 +53,9 @@ public class SilentMobile extends Fragment implements  View.OnClickListener {
     ArrayList<String> values;
     Button buttonStart, buttonStop;
 
-    public static String MY_PREFS = "MY_PREFS";
-    private SharedPreferences mySharedPreferences;
-    SharedPreferences.Editor editor;
+    public static String MY_PREFS = "silentPrefernece";
+    private SharedPreferences silentSharedPreferences;
+    SharedPreferences.Editor silenteditor;
 
     private int  mHour, mMinute;
 
@@ -89,17 +89,17 @@ public class SilentMobile extends Fragment implements  View.OnClickListener {
         EshaStart = (TextView) ParentView.findViewById(R.id.EshaStart);
         EshaEnd = (TextView) ParentView.findViewById(R.id.EshaEnd);
 
-        mySharedPreferences = getContext().getSharedPreferences(MY_PREFS, 0);
-        String string1 = mySharedPreferences.getString("key1", "00:00");
-        String string2 = mySharedPreferences.getString("key2", "00:00");
-        String string3 = mySharedPreferences.getString("key3", "00:00");
-        String string4 = mySharedPreferences.getString("key4", "00:00");
-        String string5 = mySharedPreferences.getString("key5", "00:00");
-        String string6 = mySharedPreferences.getString("key6", "00:00");
-        String string7 = mySharedPreferences.getString("key7", "00:00");
-        String string8 = mySharedPreferences.getString("key8", "00:00");
-        String string9 = mySharedPreferences.getString("key9", "00:00");
-        String string0 = mySharedPreferences.getString("key0", "00:00");
+        silentSharedPreferences = getContext().getSharedPreferences(MY_PREFS, 0);
+        String string1 = silentSharedPreferences.getString("key1", "00:00");
+        String string2 = silentSharedPreferences.getString("key2", "00:00");
+        String string3 = silentSharedPreferences.getString("key3", "00:00");
+        String string4 = silentSharedPreferences.getString("key4", "00:00");
+        String string5 = silentSharedPreferences.getString("key5", "00:00");
+        String string6 = silentSharedPreferences.getString("key6", "00:00");
+        String string7 = silentSharedPreferences.getString("key7", "00:00");
+        String string8 = silentSharedPreferences.getString("key8", "00:00");
+        String string9 = silentSharedPreferences.getString("key9", "00:00");
+        String string0 = silentSharedPreferences.getString("key0", "00:00");
 
         if (string1 != null) {
             fajarStart.setText(string1);
@@ -156,18 +156,18 @@ public class SilentMobile extends Fragment implements  View.OnClickListener {
 
                 int prefMode = Activity.MODE_PRIVATE;
 
-                editor = mySharedPreferences.edit();
-                editor.putString("key1", fajarStart.getText().toString());
-                editor.putString("key2", FajarEnd.getText().toString());
-                editor.putString("key3", zuharStart.getText().toString());
-                editor.putString("key4", zuharEnd.getText().toString());
-                editor.putString("key5", asarStart.getText().toString());
-                editor.putString("key6", asarEnd.getText().toString());
-                editor.putString("key7", magribStart.getText().toString());
-                editor.putString("key8", magribEnd.getText().toString());
-                editor.putString("key9", EshaStart.getText().toString());
-                editor.putString("key0", EshaEnd.getText().toString());
-                editor.apply();
+                silenteditor = silentSharedPreferences.edit();
+                silenteditor.putString("key1", fajarStart.getText().toString());
+                silenteditor.putString("key2", FajarEnd.getText().toString());
+                silenteditor.putString("key3", zuharStart.getText().toString());
+                silenteditor.putString("key4", zuharEnd.getText().toString());
+                silenteditor.putString("key5", asarStart.getText().toString());
+                silenteditor.putString("key6", asarEnd.getText().toString());
+                silenteditor.putString("key7", magribStart.getText().toString());
+                silenteditor.putString("key8", magribEnd.getText().toString());
+                silenteditor.putString("key9", EshaStart.getText().toString());
+                silenteditor.putString("key0", EshaEnd.getText().toString());
+                silenteditor.apply();
 
                 AlertDialog.Builder builder;
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

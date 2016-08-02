@@ -15,8 +15,10 @@ public class AppManager {
 
     private LatLng _CurrentLatLong;
 
+    //Singleton instance
     private static AppManager ourInstance = new AppManager();
 
+    //Singleton method to get instance
     public static AppManager getInstance() {
         return ourInstance;
     }
