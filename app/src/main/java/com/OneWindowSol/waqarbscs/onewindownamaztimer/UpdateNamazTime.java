@@ -79,7 +79,7 @@ public class UpdateNamazTime extends Fragment implements CompoundButton.OnChecke
     ArrayList<String> values;
     String fajar,dhuhr,Asr,Maghrib,Isha;
 
-    Button abc;
+   // Button abc;
 
     public static String MY_PREFS = "MY_PREFS";
     private SharedPreferences mySharedPreferences,mySharedPreference1;
@@ -107,15 +107,15 @@ public class UpdateNamazTime extends Fragment implements CompoundButton.OnChecke
         textEsha = (TextView)ParentView.findViewById(R.id.name4);
         texthadith=(TextView)ParentView.findViewById(R.id.textView6);
 
-        abc=(Button)ParentView.findViewById(R.id.add);
-
+        //abc=(Button)ParentView.findViewById(R.id.add);
+        /*
         abc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showChangeLangDialog();
             }
         });
-
+        */
         Calendar c = Calendar.getInstance();
         int hour=c.get(Calendar.HOUR);
         int min = c.get(Calendar.MINUTE);
