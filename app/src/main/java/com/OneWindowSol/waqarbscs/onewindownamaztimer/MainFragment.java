@@ -18,6 +18,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
+import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -100,7 +101,7 @@ public class MainFragment extends Fragment
 
     private RecyclerView rcView;
 
-    private ProgressDialog pDialog;
+    private ProgressDialog pDialog,geoDialog;
 
 
     private BroadcastReceiver mBroadCastReceiver;
@@ -130,6 +131,7 @@ public class MainFragment extends Fragment
         AppManager.context = getActivity();
         activity = getActivity();
         pDialog = new ProgressDialog(getActivity());
+        geoDialog=new ProgressDialog(getActivity());
         _masjids = new ArrayList<>();
 
         rcView = (RecyclerView) ParentView.findViewById(R.id.recycleView);
@@ -297,8 +299,8 @@ public class MainFragment extends Fragment
 
             if (location != null) {
                 AppManager.getInstance().setCurrentLatLong(new LatLng(location.getLatitude(), location.getLongitude()));
-                //new geoLocation().execute();
-                //getGeoCoder();
+                // geoLocation().execute();
+                getCompleteAddressString(location.getLatitude(), location.getLongitude());
             }
 
         } catch (SecurityException ex) {
@@ -335,34 +337,30 @@ public class MainFragment extends Fragment
         }
     }
 
-    private void getGeoCoder() {
-        Geocoder geocoder= new Geocoder(getContext(), Locale.ENGLISH);
-
+    private void getCompleteAddressString(double LATITUDE, double LONGITUDE) {
+        String strAdd = "";
+        Geocoder geocoder = new Geocoder(getActivity(), Locale.getDefault());
         try {
+            List<Address> addresses = geocoder.getFromLocation(LATITUDE, LONGITUDE, 1);
+            if (addresses != null) {
+               // String city = addresses.get(0).getLocality();
+               // String country = addresses.get(0).getCountryName();
 
-            //Place your latitude and longitude
-            List<Address> addresses = geocoder.getFromLocation(location.getLatitude(),location.getLongitude(), 5);
+                Address returnedAddress = addresses.get(0);
+                String city=returnedAddress.getLocality();
+                String country=returnedAddress.getCountryName();
+                SharedPreferences citypreference=getActivity().getSharedPreferences("citySP",0);
+                SharedPreferences.Editor cityEdit=citypreference.edit();
+                cityEdit.putString("city",city);
+                cityEdit.putString("country",country);
+                cityEdit.apply();
 
-            if(addresses != null) {
-
-                Address fetchedAddress = addresses.get(0);
-                StringBuilder strAddress = new StringBuilder();
-
-                for(int i=0; i<fetchedAddress.getMaxAddressLineIndex(); i++) {
-                    strAddress.append(fetchedAddress.getAddressLine(i)).append("\n");
-                }
-
-                //myAddress.setText("I am at: " +strAddress.toString());
-
+            } else {
+                Log.w("My Current loction address", "No Address returned!");
             }
-            
-               // myAddress.setText("No location found..!");
-
-        }
-        catch (IOException e) {
-            // TODO Auto-generated catch block
+        } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(getActivity(),"Could not get address..!", Toast.LENGTH_LONG).show();
+            Log.w("My Current loction address", "Canont get Address!");
         }
     }
 
@@ -429,12 +427,7 @@ public class MainFragment extends Fragment
 
         LocationSettings();
         LocationManager lm = (LocationManager) getActivity().getSystemService(Activity.LOCATION_SERVICE);
-        if(!lm.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
-                !lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-            Toast.makeText(getContext(), "Please Enable GPS for Current location Nearby Mosques.", Toast.LENGTH_SHORT).show();
-        }
         if(location==null){
-
         if(!lm.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
                 !lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
             // Build the alert dialog
@@ -446,17 +439,16 @@ public class MainFragment extends Fragment
             }
             //AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             //builder.setTitle("Location Services Not Active");
-            builder.setMessage("Please enable Location Services and GPS");
+            builder.setMessage("you must enable Location Services and GPS");
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialogInterface, int i) {
                     // Show location settings when the user acknowledges the alert dialog
-                    Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                    startActivity(intent);
-                }
-            }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.cancel();
+                    try {
+                        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                        startActivity(intent);
+                    }catch (Exception ex){
+                        Toast.makeText(getActivity(), ""+ex.toString(), Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
 
@@ -482,9 +474,12 @@ public class MainFragment extends Fragment
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialogInterface, int i) {
                     // Show location settings when the user acknowledges the alert dialog
-                    Intent intent = new Intent(Settings.ACTION_WIFI_SETTINGS);
-                    startActivity(intent);
-
+                    try {
+                        Intent intent = new Intent(Settings.ACTION_WIFI_SETTINGS);
+                        startActivity(intent);
+                    }catch (Exception ex){
+                        Toast.makeText(getActivity(), ""+ex.toString(), Toast.LENGTH_SHORT).show();
+                    }
 
                 }
             }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -537,6 +532,17 @@ public class MainFragment extends Fragment
         pDialog.setTitle("Loading");
         pDialog.setMessage("Loading Masjids Nearby...");
         pDialog.show();
+    }
+    private void turnGPSOn(){
+        String provider = Settings.Secure.getString(getActivity().getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+
+        if(!provider.contains("gps")){ //if gps is disabled
+            final Intent poke = new Intent();
+            poke.setClassName("com.android.settings", "com.android.settings.widget.SettingsAppWidgetProvider");
+            poke.addCategory(Intent.CATEGORY_ALTERNATIVE);
+            poke.setData(Uri.parse("3"));
+            getInstance().sendBroadcast(poke);
+        }
     }
 
     @Override
@@ -619,10 +625,11 @@ public class MainFragment extends Fragment
 
     }
     class geoLocation extends AsyncTask<String,Void,String>{
+
         String data = null;
         @Override
         protected String doInBackground(String... params) {
-
+            //geoDialog.show();
             try {
                 data=downloadData("https://maps.googleapis.com/maps/api/geocode/json?latlng="+location.getLatitude()+","+location.getLongitude()+"&key=AIzaSyDZLqRFRSUIncfiS8KXaHHw52YgdZyI6OQ");
             } catch (IOException e) {

@@ -165,7 +165,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         }else
         if(v==UpdateNamazTime){
-            TilteTextView.setText("Karachi"+" Namaz Timing");
+            SharedPreferences cityPreference=getSharedPreferences("citySP",0);
+            String c=cityPreference.getString("city","karachi");
+            TilteTextView.setText(c+" Namaz Timing");
             //btn_icon.setVisibility(View.VISIBLE);
             changeFragment(new UpdateNamazTime());
             UpdateNamazTime.startViewTransition(v);

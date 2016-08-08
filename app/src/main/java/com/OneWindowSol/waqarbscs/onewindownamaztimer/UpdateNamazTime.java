@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.Dialog;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -72,18 +73,18 @@ public class UpdateNamazTime extends Fragment implements CompoundButton.OnChecke
     //SQLiteDatabase sql;
 
     View ParentView;
-    public String API="http://api.aladhan.com/timingsByCity?city=karachi&country=pakistan&method=1";
     TextView textFajar, textZuhar, textAsar, textMagrib, textEsha,texthadith;
     CheckBox checkBox1,checkBox2,checkBox3,checkBox4,checkBox5;
     PendingIntent pintent;
     ArrayList<String> values;
     String fajar,dhuhr,Asr,Maghrib,Isha;
+    ProgressDialog uDialog;
 
    // Button abc;
 
     public static String MY_PREFS = "MY_PREFS";
-    private SharedPreferences mySharedPreferences,mySharedPreference1;
-    SharedPreferences.Editor editor,editor1;
+    private SharedPreferences mySharedPreferences,azanSharedPreferences;
+    SharedPreferences.Editor editor,azaneditor;
 
 
     public UpdateNamazTime() {
@@ -98,7 +99,7 @@ public class UpdateNamazTime extends Fragment implements CompoundButton.OnChecke
         ParentView=inflater.inflate(R.layout.fragment_update_namaz_time, container, false);
 
 
-
+        uDialog=new ProgressDialog(getContext());
         hd=new hadithDatabase(getContext());
         textFajar = (TextView)ParentView.findViewById(R.id.name);
         textZuhar = (TextView)ParentView.findViewById(R.id.name1);
@@ -128,7 +129,8 @@ public class UpdateNamazTime extends Fragment implements CompoundButton.OnChecke
         String EshaHadith="جس نے عشاء کی نماز ترک کی، اس کی نیند سے راحت ختم ہوجاتی ہے.";
         texthadith.setText("جس نے فجر کی نماز ترک کی، اس کے چہرے سے نور ختم کر دیا جاتا ہے.");
 
-        mySharedPreferences = getContext().getSharedPreferences(MY_PREFS, 0);
+        mySharedPreferences = getContext().getSharedPreferences("azanSP1", 0);
+        azanSharedPreferences = getContext().getSharedPreferences("azanSP", 0);
 
          if (hour >= 1 &&time=="pm") {
              texthadith.setText(DhuhrHadith);
@@ -159,9 +161,13 @@ public class UpdateNamazTime extends Fragment implements CompoundButton.OnChecke
         checkBox5.setOnCheckedChangeListener(this);
 
         values=new ArrayList<>();
-
+        SharedPreferences cityPreference=getActivity().getSharedPreferences("citySP",0);
+        String city=cityPreference.getString("city","karachi");
+        String country=cityPreference.getString("country","pakistan");
+        String API="http://api.aladhan.com/timingsByCity?city="+city+"&country="+country+"&method=1";
         if (AppManager.getInstance().isInternetAvailable()) {
             new NamazTimes().execute(API);
+            uDialog.show();
         }
         else{
 
@@ -172,12 +178,11 @@ public class UpdateNamazTime extends Fragment implements CompoundButton.OnChecke
             textEsha.setText(mySharedPreferences.getString("key5", "00:00"));
             //Toast.makeText(getActivity(), "Please enable internet", Toast.LENGTH_SHORT).show();
         }
-        mySharedPreferences = getContext().getSharedPreferences(MY_PREFS, 0);
-        boolean fajarboolean = mySharedPreferences.getBoolean("fajarCheck", false);
-        boolean dhuhrboolean = mySharedPreferences.getBoolean("dhuhrCheck", false);
-        boolean asarboolean = mySharedPreferences.getBoolean("asarCheck", false);
-        boolean maghribboolean = mySharedPreferences.getBoolean("maghribCheck", false);
-        boolean ishaboolean = mySharedPreferences.getBoolean("ishaCheck", false);
+        boolean fajarboolean = azanSharedPreferences.getBoolean("fajarCheck", false);
+        boolean dhuhrboolean = azanSharedPreferences.getBoolean("dhuhrCheck", false);
+        boolean asarboolean = azanSharedPreferences.getBoolean("asarCheck", false);
+        boolean maghribboolean = azanSharedPreferences.getBoolean("maghribCheck", false);
+        boolean ishaboolean = azanSharedPreferences.getBoolean("ishaCheck", false);
 
       // boolean df=hd.insertdata("یہ انگریزی نہیں");
 
@@ -193,7 +198,7 @@ public class UpdateNamazTime extends Fragment implements CompoundButton.OnChecke
         //texthadith.setSelected(true);
 
         if(fajarboolean)
-            checkBox1.setChecked(true );
+            checkBox1.setChecked(true);
         if(dhuhrboolean)
             checkBox2.setChecked(true);
         if(asarboolean)
@@ -205,48 +210,7 @@ public class UpdateNamazTime extends Fragment implements CompoundButton.OnChecke
         return ParentView;
     }
 
-    public void showChangeLangDialog() {
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
-        LayoutInflater inflater = getActivity().getLayoutInflater();
-        final View dialogView = inflater.inflate(R.layout.custom_dialog, null);
-        dialogBuilder.setView(dialogView);
 
-        final Spinner edt = (Spinner) dialogView.findViewById(R.id.edit1);
-        final  Spinner edt1=(Spinner) dialogView.findViewById(R.id.edit2);
-        //edt1.getSelectedView().setEnabled(false);
-        edt1.setEnabled(false);
-        Countries country=new Countries();
-        ArrayList<String> sbc=country.getCountry();
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, sbc);
-        edt.setAdapter(adapter);
-        dialogBuilder.setTitle("Select City And Country Name");
-        //dialogBuilder.setMessage("Enter text below");
-        dialogBuilder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                //do something with edt.getText().toString();
-                //String a=edt.getText().toString();
-                // b=edt1.getText().toString();
-
-                if (AppManager.getInstance().isInternetAvailable()) {
-
-
-                    new NamazTimes().execute("http://api.aladhan.com/timingsByCity?city=" + "dfdsfs" + "&country=" + "fsdfd" + "&method=1");
-
-                }
-                else{
-                    Toast.makeText(getActivity(), "Internet is not avaialbe", Toast.LENGTH_SHORT).show();
-                }
-
-            }
-        });
-        dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                //pass
-            }
-        });
-        AlertDialog b = dialogBuilder.create();
-        b.show();
-    }
 
 
 
@@ -266,7 +230,7 @@ public class UpdateNamazTime extends Fragment implements CompoundButton.OnChecke
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         int prefMode = Activity.MODE_PRIVATE;
 
-        editor = mySharedPreferences.edit();
+        azaneditor = azanSharedPreferences.edit();
 
         switch (buttonView.getId()){
             case R.id.checkBox1:
@@ -275,8 +239,8 @@ public class UpdateNamazTime extends Fragment implements CompoundButton.OnChecke
                     CancelAlarm(getContext());
                     Toast.makeText(getActivity(), "Fajar Alarm off", Toast.LENGTH_SHORT).show();
                 }
-                    editor.putBoolean("fajarCheck",fajarCheck);
-                    editor.apply();
+                    azaneditor.putBoolean("fajarCheck",fajarCheck);
+                    azaneditor.apply();
 
                 break;
             case R.id.checkBox2:
@@ -286,8 +250,8 @@ public class UpdateNamazTime extends Fragment implements CompoundButton.OnChecke
                     CancelAlarm(getContext());
                     Toast.makeText(getActivity(), "Dhuhr Alarm off", Toast.LENGTH_SHORT).show();
                 }
-                    editor.putBoolean("dhuhrCheck",dhuhrCheck);
-                    editor.apply();
+                    azaneditor.putBoolean("dhuhrCheck",dhuhrCheck);
+                    azaneditor.apply();
 
 
                 break;
@@ -297,8 +261,8 @@ public class UpdateNamazTime extends Fragment implements CompoundButton.OnChecke
                     CancelAlarm(getContext());
                     Toast.makeText(getActivity(), "Asr Alarm off", Toast.LENGTH_SHORT).show();
                 }
-                    editor.putBoolean("asarCheck",asarCheck);
-                    editor.apply();
+                    azaneditor.putBoolean("asarCheck",asarCheck);
+                    azaneditor.apply();
 
                 break;
             case R.id.checkBox4:
@@ -307,8 +271,8 @@ public class UpdateNamazTime extends Fragment implements CompoundButton.OnChecke
                     CancelAlarm(getContext());
                     Toast.makeText(getActivity(), "Maghrib Alarm off", Toast.LENGTH_SHORT).show();
                 }
-                    editor.putBoolean("maghribCheck",maghribCheck);
-                    editor.apply();
+                    azaneditor.putBoolean("maghribCheck",maghribCheck);
+                    azaneditor.apply();
 
                 break;
             case R.id.checkBox5:
@@ -317,8 +281,8 @@ public class UpdateNamazTime extends Fragment implements CompoundButton.OnChecke
                     CancelAlarm(getContext());
                     Toast.makeText(getActivity(), "Esha Alarm off", Toast.LENGTH_SHORT).show();
                 }
-                    editor.putBoolean("ishaCheck",ishaCheck);
-                    editor.apply();
+                    azaneditor.putBoolean("ishaCheck",ishaCheck);
+                    azaneditor.apply();
 
                 break;
         }
@@ -331,7 +295,7 @@ public class UpdateNamazTime extends Fragment implements CompoundButton.OnChecke
                 values.add(textMagrib.getText().toString());
                 values.add(textEsha.getText().toString());
             }
-            Log.d("values2",values.toString());
+            //Log.d("values2",values.toString());
             //AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             //builder.setTitle("Location Services Not Active");
                     Calendar cal = Calendar.getInstance();
@@ -361,6 +325,7 @@ public class UpdateNamazTime extends Fragment implements CompoundButton.OnChecke
             try {
                 Log.d("rrs",s);
                 parseJson(s);
+                uDialog.cancel();
             } catch (JSONException e) {
                 e.printStackTrace();
             }

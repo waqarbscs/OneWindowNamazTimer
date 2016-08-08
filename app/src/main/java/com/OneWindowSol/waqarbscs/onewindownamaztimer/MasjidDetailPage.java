@@ -233,7 +233,7 @@ public class MasjidDetailPage extends AppCompatActivity implements  View.OnClick
                     txtVJummaTime.setText(masjidRecieved.getJummaTime());
 
                 } else if (intent.getAction().endsWith(RestApiAccessService.BroadCastActionError)) {
-                    Toast.makeText(MasjidDetailPage.this, "Coundn't find any detail of this Mosque.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(MasjidDetailPage.this, "Please udpate Namaztime by clicking Edit button.", Toast.LENGTH_LONG).show();
                     txtVfarjarTime.setText("00:00");
                     txtVdoharTime.setText("00:00");
                     txtVasarTime.setText("00:00");

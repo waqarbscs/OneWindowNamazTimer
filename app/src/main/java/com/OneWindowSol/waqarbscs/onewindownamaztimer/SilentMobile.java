@@ -37,7 +37,7 @@ import java.util.Random;
  * A simple {@link Fragment} subclass.
  *
  */
-public class SilentMobile extends Fragment implements  View.OnClickListener {
+public class SilentMobile extends Fragment implements  View.OnClickListener, View.OnLongClickListener {
 
     View ParentView;
     Calendar calendar;
@@ -137,6 +137,18 @@ public class SilentMobile extends Fragment implements  View.OnClickListener {
         magribEnd.setOnClickListener(this);
         EshaStart.setOnClickListener(this);
         EshaEnd.setOnClickListener(this);
+
+        fajarStart.setOnLongClickListener(this);
+        FajarEnd.setOnLongClickListener(this);
+        zuharEnd.setOnLongClickListener(this);
+        zuharStart.setOnLongClickListener(this);
+        asarEnd.setOnLongClickListener(this);
+        asarStart.setOnLongClickListener(this);
+        magribEnd.setOnLongClickListener(this);
+        magribStart.setOnLongClickListener(this);
+        EshaStart.setOnLongClickListener(this);
+        EshaEnd.setOnLongClickListener(this);
+
         buttonStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -221,6 +233,7 @@ public class SilentMobile extends Fragment implements  View.OnClickListener {
     public void onClick(View v) {
         final Calendar c = Calendar.getInstance();
         mHour = c.get(Calendar.HOUR_OF_DAY);
+
         mMinute = c.get(Calendar.MINUTE);
         switch (v.getId()) {
             case R.id.FajarStart:
@@ -231,7 +244,17 @@ public class SilentMobile extends Fragment implements  View.OnClickListener {
                             @Override
                             public void onTimeSet(TimePicker view, int hourOfDay,
                                                   int minute) {
-                                fajarStart.setText(hourOfDay + ":" + minute);
+                                if(hourOfDay<10&&minute<10){
+                                    fajarStart.setText("0"+hourOfDay + ":" + "0"+minute);
+                                }else if(hourOfDay<10&&minute>=10){
+                                    fajarStart.setText("0"+hourOfDay + ":" + minute);
+                                }else if(hourOfDay>=10&&minute<10){
+                                    fajarStart.setText(hourOfDay + ":" +"0"+ minute);
+                                }else {
+                                    fajarStart.setText(hourOfDay + ":" + minute);
+                                }
+
+
                             }
                         }, mHour, mMinute, false);
                 timePickerDialog.show();
@@ -243,7 +266,15 @@ public class SilentMobile extends Fragment implements  View.OnClickListener {
                             @Override
                             public void onTimeSet(TimePicker view, int hourOfDay,
                                                   int minute) {
-                                FajarEnd.setText(hourOfDay + ":" + minute);
+                                if(hourOfDay<10&&minute<10){
+                                    FajarEnd.setText("0"+hourOfDay + ":" + "0"+minute);
+                                }else if(hourOfDay<10&&minute>=10){
+                                    FajarEnd.setText("0"+hourOfDay + ":" + minute);
+                                }else if(hourOfDay>=10&&minute<10){
+                                    FajarEnd.setText(hourOfDay + ":" +"0"+ minute);
+                                }else {
+                                    FajarEnd.setText(hourOfDay + ":" + minute);
+                                }
                             }
                         }, mHour, mMinute, false);
                 timePickerDialog1.show();
@@ -255,7 +286,15 @@ public class SilentMobile extends Fragment implements  View.OnClickListener {
                             @Override
                             public void onTimeSet(TimePicker view, int hourOfDay,
                                                   int minute) {
-                                zuharStart.setText(hourOfDay + ":" + minute);
+                                if(hourOfDay<10&&minute<10){
+                                    zuharStart.setText("0"+hourOfDay + ":" + "0"+minute);
+                                }else if(hourOfDay<10&&minute>=10){
+                                    zuharStart.setText("0"+hourOfDay + ":" + minute);
+                                }else if(hourOfDay>=10&&minute<10){
+                                    zuharStart.setText(hourOfDay + ":" +"0"+ minute);
+                                }else {
+                                    zuharStart.setText(hourOfDay + ":" + minute);
+                                }
                             }
                         }, mHour, mMinute, false);
                 timePickerDialog2.show();
@@ -267,7 +306,15 @@ public class SilentMobile extends Fragment implements  View.OnClickListener {
                             @Override
                             public void onTimeSet(TimePicker view, int hourOfDay,
                                                   int minute) {
-                                zuharEnd.setText(hourOfDay + ":" + minute);
+                                if(hourOfDay<10&&minute<10){
+                                    zuharEnd.setText("0"+hourOfDay + ":" + "0"+minute);
+                                }else if(hourOfDay<10&&minute>=10){
+                                    zuharEnd.setText("0"+hourOfDay + ":" + minute);
+                                }else if(hourOfDay>=10&&minute<10){
+                                    zuharEnd.setText(hourOfDay + ":" +"0"+ minute);
+                                }else {
+                                    zuharEnd.setText(hourOfDay + ":" + minute);
+                                }
                             }
                         }, mHour, mMinute, false);
                 timePickerDialog3.show();
@@ -279,7 +326,15 @@ public class SilentMobile extends Fragment implements  View.OnClickListener {
                             @Override
                             public void onTimeSet(TimePicker view, int hourOfDay,
                                                   int minute) {
-                                asarStart.setText(hourOfDay + ":" + minute);
+                                if(hourOfDay<10&&minute<10){
+                                    asarStart.setText("0"+hourOfDay + ":" + "0"+minute);
+                                }else if(hourOfDay<10&&minute>=10){
+                                    asarStart.setText("0"+hourOfDay + ":" + minute);
+                                }else if(hourOfDay>=10&&minute<10){
+                                    asarStart.setText(hourOfDay + ":" +"0"+ minute);
+                                }else {
+                                    asarStart.setText(hourOfDay + ":" + minute);
+                                }
                             }
                         }, mHour, mMinute, false);
                 timePickerDialog4.show();
@@ -291,7 +346,15 @@ public class SilentMobile extends Fragment implements  View.OnClickListener {
                             @Override
                             public void onTimeSet(TimePicker view, int hourOfDay,
                                                   int minute) {
-                                asarEnd.setText(hourOfDay + ":" + minute);
+                                if(hourOfDay<10&&minute<10){
+                                    asarEnd.setText("0"+hourOfDay + ":" + "0"+minute);
+                                }else if(hourOfDay<10&&minute>=10){
+                                    asarEnd.setText("0"+hourOfDay + ":" + minute);
+                                }else if(hourOfDay>=10&&minute<10){
+                                    asarEnd.setText(hourOfDay + ":" +"0"+ minute);
+                                }else {
+                                    asarEnd.setText(hourOfDay + ":" + minute);
+                                }
                             }
                         }, mHour, mMinute, false);
                 timePickerDialog5.show();
@@ -303,7 +366,15 @@ public class SilentMobile extends Fragment implements  View.OnClickListener {
                             @Override
                             public void onTimeSet(TimePicker view, int hourOfDay,
                                                   int minute) {
-                                magribStart.setText(hourOfDay + ":" + minute);
+                                if(hourOfDay<10&&minute<10){
+                                    magribStart.setText("0"+hourOfDay + ":" + "0"+minute);
+                                }else if(hourOfDay<10&&minute>=10){
+                                    magribStart.setText("0"+hourOfDay + ":" + minute);
+                                }else if(hourOfDay>=10&&minute<10){
+                                    magribStart.setText(hourOfDay + ":" +"0"+ minute);
+                                }else {
+                                    magribStart.setText(hourOfDay + ":" + minute);
+                                }
                             }
                         }, mHour, mMinute, false);
                 timePickerDialog6.show();
@@ -315,7 +386,15 @@ public class SilentMobile extends Fragment implements  View.OnClickListener {
                             @Override
                             public void onTimeSet(TimePicker view, int hourOfDay,
                                                   int minute) {
-                                magribEnd.setText(hourOfDay + ":" + minute);
+                                if(hourOfDay<10&&minute<10){
+                                    magribEnd.setText("0"+hourOfDay + ":" + "0"+minute);
+                                }else if(hourOfDay<10&&minute>=10){
+                                    magribEnd.setText("0"+hourOfDay + ":" + minute);
+                                }else if(hourOfDay>=10&&minute<10){
+                                    magribEnd.setText(hourOfDay + ":" +"0"+ minute);
+                                }else {
+                                    magribEnd.setText(hourOfDay + ":" + minute);
+                                }
                             }
                         }, mHour, mMinute, false);
                 timePickerDialog7.show();
@@ -327,7 +406,15 @@ public class SilentMobile extends Fragment implements  View.OnClickListener {
                             @Override
                             public void onTimeSet(TimePicker view, int hourOfDay,
                                                   int minute) {
-                                EshaEnd.setText(hourOfDay + ":" + minute);
+                                if(hourOfDay<10&&minute<10){
+                                    EshaStart.setText("0"+hourOfDay + ":" + "0"+minute);
+                                }else if(hourOfDay<10&&minute>=10){
+                                    EshaStart.setText("0"+hourOfDay + ":" + minute);
+                                }else if(hourOfDay>=10&&minute<10){
+                                    EshaStart.setText(hourOfDay + ":" +"0"+ minute);
+                                }else {
+                                    EshaStart.setText(hourOfDay + ":" + minute);
+                                }
                             }
                         }, mHour, mMinute, false);
                 timePickerDialog8.show();
@@ -339,7 +426,15 @@ public class SilentMobile extends Fragment implements  View.OnClickListener {
                             @Override
                             public void onTimeSet(TimePicker view, int hourOfDay,
                                                   int minute) {
-                                EshaStart.setText(hourOfDay + ":" + minute);
+                                if(hourOfDay<10&&minute<10){
+                                    EshaEnd.setText("0"+hourOfDay + ":" + "0"+minute);
+                                }else if(hourOfDay<10&&minute>=10){
+                                    EshaEnd.setText("0"+hourOfDay + ":" + minute);
+                                }else if(hourOfDay>=10&&minute<10){
+                                    EshaEnd.setText(hourOfDay + ":" +"0"+ minute);
+                                }else {
+                                    EshaEnd.setText(hourOfDay + ":" + minute);
+                                }
                             }
                         }, mHour, mMinute, false);
                 timePickerDialog9.show();
@@ -348,4 +443,41 @@ public class SilentMobile extends Fragment implements  View.OnClickListener {
         }
     }
 
+    @Override
+    public boolean onLongClick(View v) {
+        switch (v.getId()) {
+            case R.id.FajarStart:
+                fajarStart.setText("00:00");
+                break;
+            case R.id.FajarEnd:
+               FajarEnd.setText("00:00");
+                break;
+            case R.id.ZuharStart:
+                zuharStart.setText("00:00");
+                break;
+            case R.id.ZuharEnd:
+                zuharEnd.setText("00:00");
+                break;
+            case R.id.AsarStart:
+                asarStart.setText("00:00");
+                break;
+            case R.id.AsarEnd:
+                asarEnd.setText("00:00");
+                break;
+            case R.id.MagribStart:
+                magribStart.setText("00:00");
+                break;
+            case R.id.MagribEnd:
+                magribEnd.setText("00:00");
+                break;
+            case R.id.EshaStart:
+                EshaStart.setText("00:00");
+                break;
+            case R.id.EshaEnd:
+                EshaEnd.setText("00:00");
+                break;
+
+        }
+        return true;
+    }
 }

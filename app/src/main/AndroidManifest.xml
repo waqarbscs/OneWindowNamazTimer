@@ -5,6 +5,8 @@
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="com.OneWindowSol.googlemaps.permission.MAPS_RECEIVE" />
 
+    <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
+
     <permission
         android:name="com.OneWindowSol.googlemaps.permission.MAPS_RECEIVE"
         android:protectionLevel="signature" />
